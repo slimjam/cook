@@ -6,11 +6,22 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "app-root-path": "^2.1.0",
+    "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
+    "http": "0.0.0",
     "http-errors": "~1.6.2",
+    "i18n-nodejs": "^3.0.0",
     "jade": "~1.11.0",
-    "morgan": "~1.9.0"
+    "morgan": "~1.9.0",
+    "nconf": "^0.10.0",
+    "path": "^0.12.7",
+    "pg": "^7.7.1",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.42.0",
+    "serve-favicon": "^2.5.0",
+    "winston": "^3.1.0"
   }
 }

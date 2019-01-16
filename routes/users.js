@@ -1,12 +1,15 @@
 var express = require('express');
 var router = express.Router();
-
+const {User} = require('../models/users');
 /* GET users listing. */
+User.createUser('Polina','password',null);
 router.get('/', function(req, res, next) {
-  res.json([
-    {id: 1, username: "admin"},
-    {id: 2, username: "user"}
-  ]);
+  var users = {};
+  User.findAll().then(us => {
+    users += JSON.stringify(us)
+  }).then(() => {
+    res.json(users);
+  });
 });
 
 module.exports = router;
