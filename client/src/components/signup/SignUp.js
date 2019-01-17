@@ -107,7 +107,15 @@ class SignUp extends React.Component {
 							<Input  onChange={this.handleEmailChange} id="email" name="email" autoComplete="email" autoFocus />
 						</FormControl>
 						<FormControl margin="normal" required fullWidth>
-							<InputLabel htmlFor="email">Логин</InputLabel>
+							<InputLabel htmlFor="email">Имя</InputLabel>
+							<Input  onChange={this.handleUsernameChange} id="email" name="email" autoComplete="email" autoFocus />
+						</FormControl>
+						<FormControl margin="normal" required fullWidth>
+							<InputLabel htmlFor="email">Фамилия</InputLabel>
+							<Input  onChange={this.handleUsernameChange} id="email" name="email" autoComplete="email" autoFocus />
+						</FormControl>
+						<FormControl margin="normal" required fullWidth>
+							<InputLabel htmlFor="email">Возраст</InputLabel>
 							<Input  onChange={this.handleUsernameChange} id="email" name="email" autoComplete="email" autoFocus />
 						</FormControl>
 						<FormControl margin="normal" required fullWidth>

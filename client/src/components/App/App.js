@@ -21,7 +21,7 @@ const App = () => (
 			<Route path="/User" component={User}/>
 			<Route path="/Admin" component={Admin}/>
 			<Route path="/CreateRecipe" component={CreateRecipe}/>
-			<Footer></Footer>
+			
 		</div>
 	</Router>
 )
