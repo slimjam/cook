@@ -1,6 +1,5 @@
 const {User, Role, UserRole} = require('./users');
 const {Recipe, Ingredient, Category, RecipeIngredient} = require('./recipe');
-const Profile = require('./profile');
 const {Post, Comment, Like} = require('./post');
 const db = require('../db/dbconnect');
 db.sync().then(() => {

@@ -1,10 +1,10 @@
 const db = require('../db/dbconnect');
 const Sequelize = require('sequelize');
 const i18n = require('../i18n');
-//const Profile = require('./profile');
+const {Recipe} = require('./recipe');
 
 const User = db.define('user', {
-    userName: {
+    email: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true
@@ -20,7 +20,38 @@ const User = db.define('user', {
         type: Sequelize.BOOLEAN,
         defaultValue: true,
         allowNull: false
-    }
+    },
+    uuid_r: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV1,
+        primaryKey: true
+    },
+    theme: {
+        type: Sequelize.ENUM('vegetable', 'sugar'),
+        defaultValue: 'vegetable'
+    },
+    name: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    surname: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    age: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    description: {
+        type: Sequelize.TEXT
+    },
+    language: {
+        type: Sequelize.ENUM('ru', 'by'),
+        defaultValue: 'ru'
+    },
+    image: {
+        type: Sequelize.STRING
+    },
 });
 
 const Role = db.define(
@@ -51,30 +82,9 @@ const UserRole = db.define('user_role', {
 User.belongsToMany(Role, { as: 'Roles', through: { model: UserRole, unique: false }, foreignKey: 'user_id' });
 Role.belongsToMany(User, { as: 'Users', through: { model: UserRole, unique: false }, foreignKey: 'role_id' });
 
-/*User.createUser = function(userName, password, salt){   //test done
-    // add validation
-    db.sync({force:false}).then( () => {
-        User.findOne({ where: {userName: userName} }).then(async user => {
-            if(user){console.log(i18n.__('Input email already exists')); return null}
-            User.create({
-                userName: userName,
-                password: password,
-                salt: salt
-            }).then( new_u => {
-                Role.findOne({ where: {role: 'user'} }).then(rid => {
-                    UserRole.create({
-                        user_id: new_u.id,
-                        role_id: rid.id,
-                        name: rid.role
-                    })
-                })
-            })
-        });
 
-
-    }).then( () => { db.sync({force:false})})
-};
-*/
+User.hasMany(Recipe, {foreignKey: 'fk_profile_id', sourceKey: 'uuid_r'});
+Recipe.belongsTo(User, {foreignKey: 'fk_profile_id', targetKey: 'uuid_r'});
 User.createUserWithProfile = function(login, password, salt, name, surname, age){   //test done
                                                         // add validation
     db.sync({force:false}).then( () => {
@@ -83,20 +93,16 @@ User.createUserWithProfile = function(login, password, salt, name, surname, age)
             User.create({
                 userName: userName,
                 password: password,
-                salt: salt
+                salt: salt,
+                name: name,
+                surname: surname,
+                age: age
             }).then( new_u => {
                 Role.findOne({ where: {role: 'user'} }).then(rid => {
                     UserRole.create({
                         user_id: new_u.id,
                         role_id: rid.id,
                         name: rid.role
-                    }).then(() => {
-                        db.models.Profile.create({
-                            name: name,
-                            surname: surname,
-                            age: age,
-                            user_id: new_u.id
-                        })
                     })
                 })
             })

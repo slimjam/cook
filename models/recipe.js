@@ -1,7 +1,13 @@
 const db = require('../db/dbconnect');
 const Sequelize = require('sequelize');
+const {User} = require('./users');
 
 const Recipe = db.define('recipe', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     title: {
         type: Sequelize.STRING,
         allowNull: false
@@ -9,20 +15,22 @@ const Recipe = db.define('recipe', {
     description: {
         type: Sequelize.TEXT,
         allowNull: false
-    },/*
-    author_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },*/
+    },
     rate: {
         type: Sequelize.INTEGER
-    },/*
-    category_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },*/
+    },
     image: {
         type: Sequelize.STRING
+    },
+    com_uuid: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV1,
+        primaryKey: true
+    },
+    like_uuid: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV1,
+        primaryKey: true
     }
 });
 
@@ -71,11 +79,4 @@ Ingredient.belongsToMany(Recipe,
     { as: 'Recipe', through: { model: RecipeIngredient, unique: false }, foreignKey: 'i_id' });
 
 Recipe.belongsTo(Category, {as: 'category_id'});
-try {
-    Recipe.belongsTo(db.models.User, {as: 'author_id'});
-}
-catch (e) {
-    console.log(e);
-}
-
 module.exports = {Recipe, Ingredient, Category, RecipeIngredient};

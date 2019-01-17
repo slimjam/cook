@@ -19,6 +19,9 @@ var passport = require('passport');
 require('./config/passport');
 
 var app = express();
+//app.use(bodyParser());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 const user = require('./routes/user');
 app.use('/user', passport.authenticate('jwt', {session: false}), user);
 app.use('/auth', auth);
@@ -53,26 +56,22 @@ app.use(session({
   resave: false,
   conString: config.get('db_connect_str'),
 }));
-// app.use(function (req,res,next) {
-//   req.session.visit = req.session.visit + 1 || 1;
-//   res.send("Visits" + req.session.visit);
-// });
-/*app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
-}));*/
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(bodyParser());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/register', register);
+var router = express.Router();
+app.post('/signin', (req,res) => {
+  const { email, password } = req.body;
+  console.log(email);
+  console.log(password);
+  return res.json(req.body)
+});
+//app.use()
 app.use('/error', function (req, res, next) {
   throw new Error('Tst');
 });

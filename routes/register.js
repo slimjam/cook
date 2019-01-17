@@ -13,19 +13,56 @@ const {User} = require('../models/users');
 //     });
 // });
 
-// const url = 'localhost:4000/register';
-const usersData = [];
-// axios = require('axios');
+//const url = 'localhost:3000/signin';
+const usersData = ['data'];
+var axios = require('axios');
 // let getData = () => {
 //     axios.get(url)
-//         .then(res => usersData.push('data'))
+//         .then(res => usersData.push(res.data))
 //         .catch(err => console.log(err.data));
 //     console.log(usersData);
 // };
-router.get('/', function(req, res, next) {
+router.post('/', function(req, res, next) {
     //getData();
-    User.createUserWithProfile('Ilya@mail.com','12345','abc','Ilya', 'Losik', 20);
+    //req.body.email:
+    //User.createUserWithProfile('Ilya@mail.com','12345','abc','Ilya', 'Losik', 20);
+    console.log('post');
+    console.log(req.body.email);
+    console.log(req.body);
+    console.log(req.data);
+    //console.log(req);
     res.json(usersData);
 });
+router.get('/', function(req, res, next) {
+    //getData();
+    //req.body.email:
+    //User.createUserWithProfile('Ilya@mail.com','12345','abc','Ilya', 'Losik', 20);
+    console.log('get');
+    //console.log(req);
+    console.log(req.body);
+    console.log(res.data);
+    //axios.get('http://localhost:3001/signin').then((response) => {
+     //   console.log(response.data);
+        //console.log(response.data);
+    //});
+    res.json(usersData);
+});
+
+router.options('/', function(req, res, next) {
+    //getData();
+    //req.body.email:
+    //User.createUserWithProfile('Ilya@mail.com','12345','abc','Ilya', 'Losik', 20);
+    // axios.get('http://localhost:3001/signin').then((response) => {
+    //     console.log(response);
+    //     //console.log(response.data);
+    // });
+    console.log('opt');
+    // console.log(req.body.email);
+    // console.log(req.body);
+    // console.log(req.data);
+    //console.log(req);
+    res.json(usersData);
+});
+
 
 module.exports = router;
