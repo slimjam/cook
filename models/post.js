@@ -1,7 +1,7 @@
 const db = require('../db/dbconnect');
 const Sequelize = require('sequelize');
-const {User} = require('./users');
-const {Recipe} = require('./recipe');
+//const {User} = require('./users');
+//const {Recipe} = require('./recipe');
 
 const Post = db.define('post', {
     com_uuid: {
@@ -25,8 +25,8 @@ const Post = db.define('post', {
 
 });
 
-Post.belongsTo(User, {as: 'user_id'});
-Post.belongsTo(Recipe, {as: 'recipe_id'});
+Post.belongsTo(db.models.User, {as: 'user_id'});
+Post.belongsTo(db.models.Recipe, {as: 'recipe_id'});
 
 const Comment = db.define('comment', {
     /*user_id: {
@@ -43,10 +43,10 @@ const Like = db.define('like',{
 
 });
 
-Like.belongsTo(User, {as: 'user_id'});
+Like.belongsTo(db.models.User, {as: 'user_id'});
 Post.hasMany(Like, {foreignKey: 'fk_post_like_id', sourceKey: 'like_uuid'});
 Like.belongsTo(Post, {foreignKey: 'fk_post_like_id', targetKey: 'like_uuid'});
-Comment.belongsTo(User, {as: 'user_id'});
+Comment.belongsTo(db.models.User, {as: 'user_id'});
 Post.hasMany(Comment, {foreignKey: 'fk_post_comment_id', sourceKey: 'com_uuid'});
 Comment.belongsTo(Post, {foreignKey: 'fk_post_comment_id', targetKey: 'com_uuid'});
 

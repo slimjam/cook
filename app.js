@@ -6,16 +6,27 @@ var morgan = require('morgan');
 var winston = require('./config/winston');
 var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
-
+var errorHandler = require('errorhandler');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var register = require('./routes/register');
+var auth = require('./routes/auth');
 var config = require('./config');
+var session = require('express-session');
+var pool = require('pg-pool');
+var pgSession = require('connect-pg-simple')(session);
+var passport = require('passport');
+require('./config/passport');
 
 var app = express();
+const user = require('./routes/user');
+app.use('/user', passport.authenticate('jwt', {session: false}), user);
+app.use('/auth', auth);
+
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at:', p, 'reason:', reason);
 });
-const m = require('./models');
+require('./models');  //required!
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 app.set('port', config.get('port'));
 process.env.PORT = config.get('port');
@@ -23,6 +34,35 @@ process.env.PORT = config.get('port');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.use(session({
+  store: new pgSession({
+    pool: new pool({
+      database: 'itra',
+      user: 'postgres',
+      password: 'postgres',
+      port: 5432,
+      max: 20,
+      min: 4,
+      //idleTimeoutMillis: 1000, // close idle clients after 1 second
+      //connectionTimeoutMillis: 1000, // return an error after 1 second if connection could not be established
+    })
+  }),
+  secret: config.get('session:secret'),
+  key: config.get('session:secret'),
+  cookie: config.get('session:cookie'),
+  resave: false,
+  conString: config.get('db_connect_str'),
+}));
+// app.use(function (req,res,next) {
+//   req.session.visit = req.session.visit + 1 || 1;
+//   res.send("Visits" + req.session.visit);
+// });
+/*app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));*/
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -32,6 +72,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/register', register);
 app.use('/error', function (req, res, next) {
   throw new Error('Tst');
 });
@@ -45,12 +86,22 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
+  if(req.app.get('env') === 'development'){
+    res.locals.error = err;
+    errorHandler()(err, req, res, next);
+  }
+  else {
+    res.locals.error = {};
+    res.status(500);
+    res.render('error');
+  }
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   winston.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  //res.status(err.status || 500);
+  //res.render('error');
+
 });
 
 module.exports = app;

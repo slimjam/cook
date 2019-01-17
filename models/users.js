@@ -1,6 +1,7 @@
 const db = require('../db/dbconnect');
 const Sequelize = require('sequelize');
 const i18n = require('../i18n');
+//const Profile = require('./profile');
 
 const User = db.define('user', {
     userName: {
@@ -50,7 +51,7 @@ const UserRole = db.define('user_role', {
 User.belongsToMany(Role, { as: 'Roles', through: { model: UserRole, unique: false }, foreignKey: 'user_id' });
 Role.belongsToMany(User, { as: 'Users', through: { model: UserRole, unique: false }, foreignKey: 'role_id' });
 
-User.createUser = function(userName, password, salt){   //test done
+/*User.createUser = function(userName, password, salt){   //test done
     // add validation
     db.sync({force:false}).then( () => {
         User.findOne({ where: {userName: userName} }).then(async user => {
@@ -65,6 +66,37 @@ User.createUser = function(userName, password, salt){   //test done
                         user_id: new_u.id,
                         role_id: rid.id,
                         name: rid.role
+                    })
+                })
+            })
+        });
+
+
+    }).then( () => { db.sync({force:false})})
+};
+*/
+User.createUserWithProfile = function(login, password, salt, name, surname, age){   //test done
+                                                        // add validation
+    db.sync({force:false}).then( () => {
+        User.findOne({ where: {userName: userName} }).then(async user => {
+            if(user){console.log(i18n.__('Input email already exists')); return null}
+            User.create({
+                userName: userName,
+                password: password,
+                salt: salt
+            }).then( new_u => {
+                Role.findOne({ where: {role: 'user'} }).then(rid => {
+                    UserRole.create({
+                        user_id: new_u.id,
+                        role_id: rid.id,
+                        name: rid.role
+                    }).then(() => {
+                        db.models.Profile.create({
+                            name: name,
+                            surname: surname,
+                            age: age,
+                            user_id: new_u.id
+                        })
                     })
                 })
             })
@@ -88,7 +120,7 @@ User.prototype.setAdmin = function(){
 
 User.prototype.blockUser = function(){
     db.sync({force:false}).then( () => {
-        this.update({
+        User.update({
             is_active: false
         })
     }).then( () => { db.sync({force:false})})
@@ -96,7 +128,7 @@ User.prototype.blockUser = function(){
 
 User.prototype.unblockUser = function(){
     db.sync({force:false}).then( () => {
-        this.update({
+        User.update({
             is_active: true
         })
     }).then( () => { db.sync({force:false})})
@@ -104,10 +136,14 @@ User.prototype.unblockUser = function(){
 
 User.prototype.changePassword = function(new_password){
     db.sync({force:false}).then( () => {
-        this.update({
+        User.update({
             password: new_password
         })
     }).then( () => { db.sync({force:false})})
+};
+
+User.prototype.checkPassword = function(password){
+    return password === this.password;
 };
 
 // delete user

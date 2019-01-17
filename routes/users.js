@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const {User} = require('../models/users');
 /* GET users listing. */
-User.createUser('Polina','password',null);
+//User.createUser('Polina','password',null);
 router.get('/', function(req, res, next) {
   var users = {};
   User.findAll().then(us => {

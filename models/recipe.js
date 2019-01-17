@@ -1,6 +1,5 @@
 const db = require('../db/dbconnect');
 const Sequelize = require('sequelize');
-const { User } = require('./users');
 
 const Recipe = db.define('recipe', {
     title: {
@@ -27,17 +26,20 @@ const Recipe = db.define('recipe', {
     }
 });
 
-db.queryInterface.addConstraint('recipes', ['rate'], {
-    type: 'check',
-    where: {
-        rate: {
-            [Sequelize.Op.and]:{
-                [Sequelize.Op.gte]:0,
-                [Sequelize.Op.lte]:5
-            }
-        }
-    }
-});
+/////////////////////////////////////////////////////////
+// ADD CONSTRAINT
+////////////////////////////////////////////////////////
+// db.queryInterface.addConstraint('recipes', ['rate'], {
+//     type: 'check',
+//     where: {
+//         rate: {
+//             [Sequelize.Op.and]:{
+//                 [Sequelize.Op.gte]:0,
+//                 [Sequelize.Op.lte]:5
+//             }
+//         }
+//     }
+// });
 
 const Ingredient = db.define('ingredient', {
     name: {
@@ -69,6 +71,11 @@ Ingredient.belongsToMany(Recipe,
     { as: 'Recipe', through: { model: RecipeIngredient, unique: false }, foreignKey: 'i_id' });
 
 Recipe.belongsTo(Category, {as: 'category_id'});
-Recipe.belongsTo(User, {as: 'author_id'});
+try {
+    Recipe.belongsTo(db.models.User, {as: 'author_id'});
+}
+catch (e) {
+    console.log(e);
+}
 
 module.exports = {Recipe, Ingredient, Category, RecipeIngredient};
