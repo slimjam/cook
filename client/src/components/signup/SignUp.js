@@ -8,7 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
-import LockIcon from '@material-ui/icons/LockOutlined'
+import AccountBox from '@material-ui/icons/AccountBox'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import withStyles from '@material-ui/core/styles/withStyles'
@@ -96,7 +96,7 @@ class SignUp extends React.Component {
 				<CssBaseline />
 				<Paper className={classes.paper}>
 					<Avatar className={classes.avatar}>
-						<LockIcon />
+						<AccountBox />
 					</Avatar>
 					<Typography component="h1" variant="h5">
 						Регистрация
