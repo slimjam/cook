@@ -3,7 +3,15 @@ const Sequelize = require('sequelize');
 const i18n = require('../i18n');
 const {Recipe} = require('./recipe');
 
+const themeList = ['vegetable', 'sugar'];
+const languageList = ['ru', 'by'];
+
 const User = db.define('user', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     email: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -79,12 +87,14 @@ const UserRole = db.define('user_role', {
     }
 });
 
-User.belongsToMany(Role, { as: 'Roles', through: { model: UserRole, unique: false }, foreignKey: 'user_id' });
-Role.belongsToMany(User, { as: 'Users', through: { model: UserRole, unique: false }, foreignKey: 'role_id' });
+User.belongsToMany(Role, { as: 'Roles', through: { model: UserRole, unique: false }, foreignKey: 'user_id',
+    onDelete: 'cascade', hooks:true });
+Role.belongsToMany(User, { as: 'Users', through: { model: UserRole, unique: false }, foreignKey: 'role_id',
+    onDelete: 'cascade', hooks:true});
 
 
-User.hasMany(Recipe, {foreignKey: 'fk_profile_id', sourceKey: 'uuid_r'});
-Recipe.belongsTo(User, {foreignKey: 'fk_profile_id', targetKey: 'uuid_r'});
+User.hasMany(Recipe, {foreignKey: 'fk_profile_id', sourceKey: 'uuid_r', onDelete: 'cascade', hooks:true});
+Recipe.belongsTo(User, {foreignKey: 'fk_profile_id', targetKey: 'uuid_r', onDelete: 'cascade', hooks:true});
 User.createUserWithProfile = function(login, password, salt, name, surname, age){   //test done
                                                         // add validation
     db.sync({force:false}).then( () => {
@@ -152,6 +162,30 @@ User.prototype.checkPassword = function(password){
     return password === this.password;
 };
 
+User.prototype.setTheme = function(theme){
+    if (!(theme in themeList)){ return {message: 'Incorrect value'}}
+    db.sync({force:false}).then( () => {
+        User.update({
+            theme: theme
+        })
+    }).then( () => { db.sync({force:false})})
+};
+
+User.prototype.setLanguage = function(lang){
+    if (!(lang in languageList)){ return {message: 'Incorrect value'}}
+    db.sync({force:false}).then( () => {
+        User.update({
+            language: lang
+        })
+    }).then( () => { db.sync({force:false})})
+};
+
+User.prototype.setTheme = function(){
+    var u_id = this.id;
+    db.sync({force:false}).then( () => {
+        User.delete()
+    }).then( () => { db.sync({force:false})})
+};
 // delete user
 
 module.exports = {User, Role, UserRole};
