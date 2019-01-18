@@ -88,10 +88,10 @@ Recipe.belongsTo(User, {foreignKey: 'fk_profile_id', targetKey: 'uuid_r'});
 User.createUserWithProfile = function(login, password, salt, name, surname, age){   //test done
                                                         // add validation
     db.sync({force:false}).then( () => {
-        User.findOne({ where: {userName: userName} }).then(async user => {
+        User.findOne({ where: {email: login} }).then(async user => {
             if(user){console.log(i18n.__('Input email already exists')); return null}
             User.create({
-                userName: userName,
+                email: login,
                 password: password,
                 salt: salt,
                 name: name,
