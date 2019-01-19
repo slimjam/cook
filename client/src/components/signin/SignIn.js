@@ -5,18 +5,22 @@ import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import FormControl from '@material-ui/core/FormControl'
 import Input from '@material-ui/core/Input'
+import AccountBox from '@material-ui/icons/AccountBox'
 import InputLabel from '@material-ui/core/InputLabel'
-import LockIcon from '@material-ui/icons/LockOutlined'
+//import LockIcon from '@material-ui/icons/LockOutlined'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import withStyles from '@material-ui/core/styles/withStyles'
 import FilterLink from '../link/link'
+import {logIn} from '../../Actions/signinActions'
+import {Link} from 'react-router-dom';
+import connect from 'react-redux/es/connect/connect'
 const axios = require('axios')
 
 const styles = (theme) => ({
 	main: {
 		width: 'auto',
-		display: 'block', // Fix IE 11 issue.
+		display: 'block',
 		marginLeft: theme.spacing.unit * 3,
 		marginRight: theme.spacing.unit * 3,
 		[theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
@@ -24,6 +28,9 @@ const styles = (theme) => ({
 			marginLeft: 'auto',
 			marginRight: 'auto',
 		},
+	},
+	heroButtons: {
+		marginTop: theme.spacing.unit * 4,
 	},
 	paper: {
 		marginTop: theme.spacing.unit * 8,
@@ -59,20 +66,25 @@ class SignIn extends React.Component {
 		this.handlePasswordChange = this.handlePasswordChange.bind(this)
 		this.state = {
 			email:'',
-			password:''
+			password:'',
+			token: ''
 		}
 	}
 	signIn(){
-		axios.post('http://localhost:8080/signin', {
+		axios.post('http://localhost:3001/signIn', {
 			email: this.state.email,
 			password: this.state.password
 		})
-			.then(function (response) {
-				console.log(response)
+			.then(function (res) {
+				this.props.dispatch(logIn(JSON.parse(res.data)))
 			})
-			.catch(function (error) {
-				console.log(error)
-			})
+			axios.get('http://localhost:3001/signIn')
+				.then(function (response) {
+					this.props.dispatch(logIn('JSON.parse(response.data)'))
+				})
+				.catch(function (error) {
+					console.log(error)
+				})
 	}
 	handleEmailChange(e){
 		this.setState({email:e.target.value})
@@ -88,7 +100,7 @@ class SignIn extends React.Component {
 				<CssBaseline />
 				<Paper className={classes.paper}>
 					<Avatar className={classes.avatar}>
-						<LockIcon />
+						<AccountBox />
 					</Avatar>
 					<Typography component="h1" variant="h5">
 						Вход
@@ -102,19 +114,22 @@ class SignIn extends React.Component {
 							<InputLabel htmlFor="password">Пароль</InputLabel>
 							<Input onChange={this.handlePasswordChange} name="password" type="password" id="password" autoComplete="current-password" />
 						</FormControl>
-						
-						<FilterLink filter="album" className={classes.link} >
-						<Button
-							type="submit"
-							fullWidth
-							variant="contained"
-							color="primary"
-							className={classes.submit}
-							onClick={this.signIn}
-						>
-								Войти
-						</Button>
-						</FilterLink>
+						<Button  variant="outlined" color="primary" component={Link} to="../SignUp/SignUp">
+				Регистрация
+				</Button>
+						<FilterLink filter="../main"  >
+								<Button
+									type="submit"
+									fullWidth
+									variant="contained"
+									color="primary"
+	
+									onClick={this.signIn}
+								>
+									Войти
+								</Button>
+								{console.log(this.props)}
+							</FilterLink>
 					</form>
 				</Paper>
 			</main>
@@ -127,6 +142,7 @@ class SignIn extends React.Component {
 
 SignIn.propTypes = {
 	classes: PropTypes.object.isRequired,
+	
 }
 
 export default withStyles(styles)(SignIn)

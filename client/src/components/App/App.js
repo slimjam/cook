@@ -8,12 +8,15 @@ import Footer from '../footer/footer'
 import Recipe from '../Recipe/Recipe'
 import User from '../user/user'
 import Admin from '../admin/admin'
+import store from '../../Store/Store'
 import CreateRecipe from '../createrecipe/createrecipe'
+import {Provider} from 'react-redux'
 const App = () => (
+	<Provider store={store}>
 	<Router>
 		<div>
-			<SearchAppBar>
-			</SearchAppBar>
+		
+			<SearchAppBar/>
 			<Route path="/Main" component={Album}/>
 			<Route path="/SignIn" component={SignIn}/>
 			<Route path="/SignUp" component={SignUp}/>
@@ -24,6 +27,7 @@ const App = () => (
 			
 		</div>
 	</Router>
+	</Provider>
 )
 
 

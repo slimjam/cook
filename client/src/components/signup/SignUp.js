@@ -18,7 +18,7 @@ const axios = require('axios')
 const styles = (theme) => ({
 	main: {
 		width: 'auto',
-		display: 'block', // Fix IE 11 issue.
+		display: 'block',
 		marginLeft: theme.spacing.unit * 3,
 		marginRight: theme.spacing.unit * 3,
 		[theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
@@ -62,12 +62,14 @@ class SignUp extends React.Component {
 		this.handlePasswordChange = this.handlePasswordChange.bind(this)
 		this.state = {
 			email:'',
-			username:'',
+			name:'',
+			surname:'',
+			age:'',
 			password:''
 		}
 	}
 	signUp(){
-		axios.post('http://localhost:8080/signup', {
+		axios.post('http://localhost:3001/signup', {
 			email: this.state.email,
 			username: this.state.username,
 			password: this.state.password

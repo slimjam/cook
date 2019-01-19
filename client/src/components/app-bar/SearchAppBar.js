@@ -102,9 +102,7 @@ function SearchAppBar(props) {
 				<Button variant="outlined" color="inherit" component={Link} to="../Signin/SignIn">
 				Вход
 				</Button>
-				<Button  color="inherit" component={Link} to="../SignUp/SignUp">
-				Регистрация
-				</Button>
+				
 				
 				</Toolbar>
 			</AppBar>

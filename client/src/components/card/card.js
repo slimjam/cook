@@ -14,6 +14,7 @@ import red from '@material-ui/core/colors/red'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import FilterLink from '../link/link'
 import { blue } from '@material-ui/core/colors';
+import { Link } from 'react-router-dom'
 
 const styles = (theme) => ({
 	card: {
@@ -54,7 +55,7 @@ class RecipeReviewCard extends React.Component {
 
     				avatar={
 						<FilterLink filter="User" >
-    					<Avatar aria-label="Recipe" className={classes.avatar}>
+    					<Avatar aria-label="Recipe" className={classes.avatar} component={Link} to="/user">
                             Us
     					</Avatar>
 						</FilterLink>
@@ -75,17 +76,18 @@ class RecipeReviewCard extends React.Component {
     			</CardContent>
     			<CardActions className={classes.actions} disableActionSpacing>
 				
-					<FilterLink filter="Recipe" >
+					
     				<IconButton
     					className={classnames(classes.expand, {
     						[classes.expandOpen]: this.state.expanded,
     					})}
     					aria-expanded={this.state.expanded}
-    					aria-label="Show more"
+						aria-label="Show more"
+						component={Link} to="/recipe"
     				>
     					<ExpandMoreIcon />
     				</IconButton>
-					</FilterLink>
+					
     			</CardActions>
     		</Card>
     	)
