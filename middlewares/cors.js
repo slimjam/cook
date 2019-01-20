@@ -9,4 +9,4 @@ module.exports = function cors(req, res, next) {
     else {
         next();
     }
-}
+};

@@ -16,17 +16,23 @@ var session = require('express-session');
 var pool = require('pg-pool');
 var pgSession = require('connect-pg-simple')(session);
 var passport = require('passport');
-var cors = require('./cors');
+var cors = require('./middlewares/cors');
+var jwtToHeader = require('./middlewares/jwtToHeader');
 require('./config/passport');
 
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors);
+// url like
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(jwtToHeader);
 const user = require('./routes/user');
 app.use('/album', passport.authenticate('jwt', {session: false}), user); //to protct
 app.use('/signin', auth); // login action
-// url like
+// app.use(session({
 // add midl to trans jswbt to hadrs
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at:', p, 'reason:', reason);
@@ -37,9 +43,8 @@ app.set('port', config.get('port'));
 process.env.PORT = config.get('port');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
 
-// app.use(session({
+app.set('view engine', 'jade');
 //   store: new pgSession({
 //     pool: new pool({
 //       database: 'itra',
@@ -59,9 +64,6 @@ app.set('view engine', 'jade');
 //   conString: config.get('db_connect_str'),
 // }));
 app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
