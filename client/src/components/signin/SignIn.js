@@ -62,7 +62,7 @@ class SignIn extends React.Component {
 					<Avatar className={'avatar'}>
 						<LockIcon />
 					</Avatar>
-					<Typography component="h1" variant="h5" className={'typographysign'}>
+					<Typography component="h1" variant="h5" align="center">
 						Вход
 					</Typography>
 					<form className={'form'}>
@@ -79,11 +79,12 @@ class SignIn extends React.Component {
 				</Button>
 						<FilterLink filter="../main"  >
 								<Button
-								    
+								    className={'button-signup'}
 									type="submit"
 									fullWidth
 									variant="contained"
 									color="primary"
+									
 	
 									onClick={this.signIn}
 								>

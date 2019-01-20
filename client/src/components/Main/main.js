@@ -75,20 +75,7 @@ function Album(props) {
 						<Typography variant="h6" align="center" color="textSecondary" paragraph>
                             Это сайт для заядлых кулинаров
 						</Typography>
-						<div className={classes.heroButtons}>
-							<Grid container spacing={16} justify="center">
-								<Grid item>
-									<Button variant="contained" color="primary">
-                                        Вход
-									</Button>
-								</Grid>
-								<Grid item>
-									<Button variant="outlined" color="primary">
-                                        Регистрация
-									</Button>
-								</Grid>
-							</Grid>
-						</div>
+						
 					</div>
 				</div>
 				<div className={classNames(classes.layout, classes.cardGrid)}>

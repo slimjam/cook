@@ -1,14 +1,14 @@
 .main {
     width: 'auto';
 		display: 'block';
-		marginLeft: 400;
-		marginRight: 400;
+		margin-Left: 400;
+		margin-Right: 400;
 		
 }
 .avatar {
-     margin-left: 250px;
+     margin-left: 300px;
      margin-bottom: 50px;
-     margin-top: 100px
+     margin-top: 10px
 }
 .form {
     margin-left: 100px;
@@ -21,6 +21,10 @@
 }
 .button-theme {
     margin: 15px !important
+}
+.button-signup {
+    margin-left: 20px;
+    margin: 20px !important
 }
 .typographysign {
     margin-left: 50px;

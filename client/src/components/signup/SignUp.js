@@ -11,6 +11,8 @@ import Typography from '@material-ui/core/Typography'
 import FilterLink from '../link/link'
 import axios from 'axios'
 import '../../Assets/SignIn.css'
+import FormControlLabelPosition from '../EditTheme/EditTheme'
+import FormControlLabelPositionL from '../EditLanguage/EditLanguage'
 import {Link} from "react-router-dom";
 
 
@@ -70,10 +72,15 @@ class SignUp extends React.Component {
 						<FormControl margin="normal" required fullWidth>
 							<InputLabel htmlFor="email">Имя</InputLabel>
 							<Input  onChange={this.handleEmailChange} id="name" name="name" autoFocus />
-						</FormControl><FormControl margin="normal" required fullWidth>
+						</FormControl>
+						<FormControl margin="normal" required fullWidth>
 							<InputLabel >Фамилия</InputLabel>
 							<Input  onChange={this.handleEmailChange} id="surname" name="surname"  autoFocus />
 						</FormControl>
+						<FormControl margin="normal" required fullWidth>
+							<InputLabel >Возраст</InputLabel>
+							<Input  onChange={this.handleEmailChange} id="age" name="age" autoFocus />
+							</FormControl>
 						<FormControl margin="normal" required fullWidth>
 							<InputLabel htmlFor="password">Пароль</InputLabel>
 							<Input onChange={this.handlePasswordChange} name="password" type="password" id="password" autoComplete="current-password" />
@@ -81,14 +88,16 @@ class SignUp extends React.Component {
 
 							<Button
 								fullWidth
+								className={'button-signup'}
 								variant="contained"
 								color="primary"
 								onClick={this.signUp}
 							>
 								Зарегистрироваться
 							</Button>
-							<Button margin='in' variant="outlined" className={'button-theme'}>Смена темы</Button>
-							<Button variant="outlined">Смена языка</Button>
+							
+							<FormControlLabelPosition/>
+							<FormControlLabelPositionL/>
 
 					</form>
 				</Paper>
