@@ -74,5 +74,14 @@
   "Lenten dishes": {
     "ru": "Постные блюда",
     "by": "Посныя стравы"
+  },
+  "Incorrect email or password.": {
+    "ru": "Неправильный логин или пароль"
+  },
+  "Logged In Successfully": {
+    "ru": "Вход выполнен успешно!"
+  },
+  "Registration successful. Check your email!": {
+    "ru": "Пользователь зарегистриован , для завершения регистрации проверьте почту!"
   }
 }

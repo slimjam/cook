@@ -100,7 +100,10 @@ User.createUserWithProfile = function(login, password, salt,
                                                         // add validation
     db.sync({force:false}).then( () => {
         User.findOne({ where: {email: login} }).then(async user => {
-            if(user){console.log(i18n.__('Input email already exists')); return null}
+            if(user){
+                console.log(i18n.__('Input email already exists'));
+                return {message: i18n.__('Input email already exists')}
+            }
             User.create({
                 email: login,
                 password: password,

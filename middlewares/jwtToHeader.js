@@ -6,7 +6,7 @@ module.exports = function jwtToHeader(req, res, next) {
     var tokenCookie = cookies.get('tokenCookie', { signed: true });
     if (tokenCookie) {
         console.log('Cookie set successful to header');
-        res.setHeader('Authorization', 'Bearer ' + tokenCookie);    //to req 
+        res.setHeader('Authorization', 'Bearer ' + tokenCookie);    //to req
         next();
     }
     else {

@@ -11227,3 +11227,36 @@
    '500 - req.setHeader is not a function - /signIn?email=admin&password=admin - POST - ::1',
   level: '\u001b[31merror\u001b[39m',
   [Symbol(level)]: 'error' }
+{ message: '404 - Not Found - /signIn - GET - ::1',
+  level: '\u001b[31merror\u001b[39m',
+  [Symbol(level)]: 'error' }
+{ message: '404 - Not Found - /signIn - GET - ::1',
+  level: '\u001b[31merror\u001b[39m',
+  [Symbol(level)]: 'error' }
+{ message: '404 - Not Found - /signIn - GET - ::1',
+  level: '\u001b[31merror\u001b[39m',
+  [Symbol(level)]: 'error' }
+{ message: '404 - Not Found - /signIn - GET - ::1',
+  level: '\u001b[31merror\u001b[39m',
+  [Symbol(level)]: 'error' }
+{ message: '404 - Not Found - /signIn - GET - ::1',
+  level: '\u001b[31merror\u001b[39m',
+  [Symbol(level)]: 'error' }
+{ message: '404 - Not Found - /signIn - GET - ::1',
+  level: '\u001b[31merror\u001b[39m',
+  [Symbol(level)]: 'error' }
+{ message: '404 - Not Found - /signIn - GET - ::1',
+  level: '\u001b[31merror\u001b[39m',
+  [Symbol(level)]: 'error' }
+{ message: '404 - Not Found - /signIn - GET - ::1',
+  level: '\u001b[31merror\u001b[39m',
+  [Symbol(level)]: 'error' }
+{ message: '404 - Not Found - /signIn - GET - ::1',
+  level: '\u001b[31merror\u001b[39m',
+  [Symbol(level)]: 'error' }
+{ message: '404 - Not Found - /signIn - GET - ::1',
+  level: '\u001b[31merror\u001b[39m',
+  [Symbol(level)]: 'error' }
+{ message: '404 - Not Found - /signIn - GET - ::1',
+  level: '\u001b[31merror\u001b[39m',
+  [Symbol(level)]: 'error' }

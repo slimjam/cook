@@ -16,8 +16,8 @@ router.post('/', function (req, res, next) {
         if (err || !user) {
             console.log(err);
             console.log('bad');
-            return res.status(400).json({
-                message: 'Something is not right',
+            return res.json({
+                message: info.message,
                 user   : user
             });
         }

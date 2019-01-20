@@ -4,6 +4,7 @@ const {User} = require('../models/users');
 const passportJWT = require("passport-jwt");
 const JWTStrategy   = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
+const i18n = require('../i18n');
 
 passport.use(new LocalStrategy({
         usernameField: 'email',
@@ -23,10 +24,10 @@ passport.use(new LocalStrategy({
                 console.log(user);
                 if (!user) {
                     console.log('Incorrect email or password.');
-                    return cb(null, false, {message: 'Incorrect email or password.'});
+                    return cb(null, false, {message: i18n.__('Incorrect email or password.')});
                 }
                 console.log('Logged In Successfully');
-                return cb(null, user, {message: 'Logged In Successfully'});
+                return cb(null, user, {message: i18n.__('Logged In Successfully')});
             })
             .catch(err => cb(err));
     }
