@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(jwtToHeader);
 const user = require('./routes/user');
-app.use('/album', passport.authenticate('jwt', {session: false}), user); //to protct
+app.use('/main', passport.authenticate('jwt', {session: false}), user); //to protct
 app.use('/signin', auth); // login action
 // app.use(session({
 // add midl to trans jswbt to hadrs

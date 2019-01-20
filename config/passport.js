@@ -33,18 +33,21 @@ passport.use(new LocalStrategy({
 ));
 
 passport.use(new JWTStrategy({
-        jwtFromRequest: ExtractJWT.fromHeader('authorization'),
+        //jwtFromRequest: ExtractJWT.fromHeader('Authorization'),
+        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
         secretOrKey   : 'your_jwt_secret'
     },
     function (jwtPayload, cb) {
     console.log('momy fun');
+    console.log(jwtPayload.id);
         //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
-        return User.findOneById(jwtPayload.id)
+        return User.findById(jwtPayload.id)
             .then(user => {
                 console.log(user);
                 return cb(null, user);
             })
             .catch(err => {
+                console.log(err);
                 return cb(err);
             });
     }

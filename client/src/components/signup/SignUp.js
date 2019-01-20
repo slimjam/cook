@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import FilterLink from '../link/link'
 import axios from 'axios'
-import '../../Assets/SignIn.css'
+import '../../assets/SignIn.css'
 import FormControlLabelPosition from '../EditTheme/EditTheme'
 import FormControlLabelPositionL from '../EditLanguage/EditLanguage'
 import {Link} from "react-router-dom";
