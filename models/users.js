@@ -95,7 +95,8 @@ Role.belongsToMany(User, { as: 'Users', through: { model: UserRole, unique: fals
 
 User.hasMany(Recipe, {foreignKey: 'fk_profile_id', sourceKey: 'uuid_r', onDelete: 'cascade', hooks:true});
 Recipe.belongsTo(User, {foreignKey: 'fk_profile_id', targetKey: 'uuid_r', onDelete: 'cascade', hooks:true});
-User.createUserWithProfile = function(login, password, salt, name, surname, age){   //test done
+User.createUserWithProfile = function(login, password, salt,
+                                      name, surname, age, lang=languageList[0], theme=themeList[0]){   //test done
                                                         // add validation
     db.sync({force:false}).then( () => {
         User.findOne({ where: {email: login} }).then(async user => {
@@ -106,7 +107,9 @@ User.createUserWithProfile = function(login, password, salt, name, surname, age)
                 salt: salt,
                 name: name,
                 surname: surname,
-                age: age
+                age: age,
+                language: lang,
+                theme: theme
             }).then( new_u => {
                 Role.findOne({ where: {role: 'user'} }).then(rid => {
                     UserRole.create({
@@ -180,12 +183,16 @@ User.prototype.setLanguage = function(lang){
     }).then( () => { db.sync({force:false})})
 };
 
-User.prototype.setTheme = function(){
-    var u_id = this.id;
-    db.sync({force:false}).then( () => {
-        User.delete()
-    }).then( () => { db.sync({force:false})})
-};
+// User.prototype.deleteUser = function(){
+//     var u_id = this.id;
+//     db.sync({force:false}).then( () => {
+//         User.delete()
+//     }).then( () => { db.sync({force:false})})
+// };
 // delete user
+
+// edit?
+
+//image upload?
 
 module.exports = {User, Role, UserRole};

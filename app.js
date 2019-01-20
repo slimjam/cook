@@ -26,7 +26,8 @@ app.use(cors);
 const user = require('./routes/user');
 app.use('/album', passport.authenticate('jwt', {session: false}), user); //to protct
 app.use('/signin', auth); // login action
-
+// url like
+// add midl to trans jswbt to hadrs
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at:', p, 'reason:', reason);
 });
@@ -60,7 +61,7 @@ app.set('view engine', 'jade');
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-//app.use(cookieParser());
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
