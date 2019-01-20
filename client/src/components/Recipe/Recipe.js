@@ -1,48 +1,45 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import RestoreIcon from '@material-ui/icons/Restore';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import CardMedia from '@material-ui/core/CardMedia';
+import Example from './Comment'
+const styles = theme => ({
+  root: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
+    weight: 1000,
+    height: 500
+  },
+});
 
-const styles = {
-    root: {
-        width: 500,
-    },
-};
+function PaperSheet(props) {
+  const { classes } = props;
 
-class Recipe extends React.Component {
-    state = {
-        value: 0,
-    };
+  return (
+    <div>
+      <Paper className={classes.root} elevation={1}>
+        <Typography variant="h3" component="h3">
+          Пицца
+        </Typography>
+        
+        <Typography component="p">
+        В теплом молоке размешай дрожжи и сахар и оставь в теплом месте на 10-15 минут.
+Когда появятся пузырьки, вылей опару в просеянную муку и туда же добавь яйцо. Посоли, добавь специи и вымеси тесто до однородности.
+Раскатай тесто в круг по размеру формы.
+Выложи тесто в смазанную жиром форму или противень. Чтобы края пиццы были красивыми, защипни их вовнутрь.
 
-    handleChange = (event, value) => {
-        this.setState({ value });
-    };
-
-    render() {
-        const { classes } = this.props;
-        const { value } = this.state;
-
-        return (
-            <BottomNavigation
-                value={value}
-                onChange={this.handleChange}
-                showLabels
-                className={classes.root}
-            >
-                <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-                <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-                <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
-            </BottomNavigation>
-        );
-    }
+        </Typography>
+      </Paper>
+      <Example/>
+    </div>
+  );
 }
 
-Recipe.propTypes = {
-    classes: PropTypes.object.isRequired,
+PaperSheet.propTypes = {
+  classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Recipe);
+export default withStyles(styles)(PaperSheet);

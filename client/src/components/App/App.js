@@ -11,13 +11,14 @@ import Admin from '../admin/admin'
 import store from '../../Store/Store'
 import CreateRecipe from '../createrecipe/createrecipe'
 import {Provider} from 'react-redux'
+import main from '../Main/main';
 const App = () => (
 	<Provider store={store}>
 	<Router>
 		<div>
 		
 			<SearchAppBar/>
-			<Route path="/Main" component={Album}/>
+			<Route path="/Main" component={main}/>
 			<Route path="/SignIn" component={SignIn}/>
 			<Route path="/SignUp" component={SignUp}/>
 			<Route path="/Recipe" component={Recipe}/>

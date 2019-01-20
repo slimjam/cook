@@ -1,0 +1,27 @@
+.main {
+    width: 'auto';
+		display: 'block';
+		marginLeft: 400;
+		marginRight: 400;
+		
+}
+.avatar {
+     margin-left: 250px;
+     margin-bottom: 50px;
+     margin-top: 100px
+}
+.form {
+    margin-left: 100px;
+    margin-right: 100px;
+}
+.paper {
+    margin-left: 400px;
+    margin-right: 400px;
+     
+}
+.button-theme {
+    margin: 15px !important
+}
+.typographysign {
+    margin-left: 50px;
+}
