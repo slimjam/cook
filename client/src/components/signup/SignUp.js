@@ -1,58 +1,20 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import FormControl from '@material-ui/core/FormControl'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
-import AccountBox from '@material-ui/icons/AccountBox'
+import LockIcon from '@material-ui/icons/LockOutlined'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
-import withStyles from '@material-ui/core/styles/withStyles'
 import FilterLink from '../link/link'
-const axios = require('axios')
-
-const styles = (theme) => ({
-	main: {
-		width: 'auto',
-		display: 'block',
-		marginLeft: theme.spacing.unit * 3,
-		marginRight: theme.spacing.unit * 3,
-		[theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-			width: 400,
-			marginLeft: 'auto',
-			marginRight: 'auto',
-		},
-	},
-	paper: {
-		marginTop: theme.spacing.unit * 8,
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-		padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
-	},
-	avatar: {
-		margin: theme.spacing.unit,
-		backgroundColor: theme.palette.secondary.main,
-	},
-	form: {
-		width: '100%', // Fix IE 11 issue.
-		marginTop: theme.spacing.unit,
-	},
-	submit: {
-		marginTop: theme.spacing.unit * 3,
-		textDecoration: 'none'
-	},
-
-	link: {
-		textDecoration: 'none'
-	},
+import axios from 'axios'
+import '../../Assets/SignIn.css'
+import {Link} from "react-router-dom";
 
 
-})
+
 class SignUp extends React.Component {
 	constructor(props) {
 		super(props)
@@ -62,23 +24,21 @@ class SignUp extends React.Component {
 		this.handlePasswordChange = this.handlePasswordChange.bind(this)
 		this.state = {
 			email:'',
-			name:'',
-			surname:'',
-			age:'',
-			password:''
+			username:'',
+			password:'',
+			role: 2
 		}
 	}
 	signUp(){
 		axios.post('http://localhost:3001/signup', {
 			email: this.state.email,
-			username: this.state.username,
-			password: this.state.password
+			name: this.state.name,
+			surname: this.state.surname,
+			password: this.state.password,
+			roles: this.state.roles
 		})
 			.then(function (response) {
 				console.log(response)
-			})
-			.catch(function (error) {
-				console.log(error)
 			})
 	}
 	handleEmailChange(e){
@@ -91,52 +51,45 @@ class SignUp extends React.Component {
 		this.setState({password:e.target.value})
 	}
 	render() {
-		const { classes } = this.props
 
 		return (
-			<main className={classes.main}>
+			<main className={'main'}>
 				<CssBaseline />
-				<Paper className={classes.paper}>
-					<Avatar className={classes.avatar}>
-						<AccountBox />
+				<Paper className={'paper'}>
+					<Avatar className={'avatar'}>
+						<LockIcon />
 					</Avatar>
-					<Typography component="h1" variant="h5">
+					<Typography align="center" component="h1" variant="h5">
 						Регистрация
 					</Typography>
-					<form className={classes.form}>
+					<form className={'form'}>
 						<FormControl margin="normal" required fullWidth>
-							<InputLabel htmlFor="email">Email</InputLabel>
+							<InputLabel htmlFor="email">Адрес электронной почты</InputLabel>
 							<Input  onChange={this.handleEmailChange} id="email" name="email" autoComplete="email" autoFocus />
 						</FormControl>
 						<FormControl margin="normal" required fullWidth>
 							<InputLabel htmlFor="email">Имя</InputLabel>
-							<Input  onChange={this.handleUsernameChange} id="email" name="email" autoComplete="email" autoFocus />
-						</FormControl>
-						<FormControl margin="normal" required fullWidth>
-							<InputLabel htmlFor="email">Фамилия</InputLabel>
-							<Input  onChange={this.handleUsernameChange} id="email" name="email" autoComplete="email" autoFocus />
-						</FormControl>
-						<FormControl margin="normal" required fullWidth>
-							<InputLabel htmlFor="email">Возраст</InputLabel>
-							<Input  onChange={this.handleUsernameChange} id="email" name="email" autoComplete="email" autoFocus />
+							<Input  onChange={this.handleEmailChange} id="name" name="name" autoFocus />
+						</FormControl><FormControl margin="normal" required fullWidth>
+							<InputLabel >Фамилия</InputLabel>
+							<Input  onChange={this.handleEmailChange} id="surname" name="surname"  autoFocus />
 						</FormControl>
 						<FormControl margin="normal" required fullWidth>
 							<InputLabel htmlFor="password">Пароль</InputLabel>
 							<Input onChange={this.handlePasswordChange} name="password" type="password" id="password" autoComplete="current-password" />
 						</FormControl>
-						
-						<FilterLink filter="album" className={classes.link} >
+
 							<Button
-								type="submit"
 								fullWidth
 								variant="contained"
 								color="primary"
-								className={classes.submit}
 								onClick={this.signUp}
 							>
 								Зарегистрироваться
 							</Button>
-						</FilterLink>
+							<Button margin='in' variant="outlined" className={'button-theme'}>Смена темы</Button>
+							<Button variant="outlined">Смена языка</Button>
+
 					</form>
 				</Paper>
 			</main>
@@ -144,11 +97,4 @@ class SignUp extends React.Component {
 	}
 }
 
-
-
-
-SignUp.propTypes = {
-	classes: PropTypes.object.isRequired,
-}
-
-export default withStyles(styles)(SignUp)
+export default (SignUp)

@@ -5,60 +5,22 @@ import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import FormControl from '@material-ui/core/FormControl'
 import Input from '@material-ui/core/Input'
-import AccountBox from '@material-ui/icons/AccountBox'
 import InputLabel from '@material-ui/core/InputLabel'
-//import LockIcon from '@material-ui/icons/LockOutlined'
+import LockIcon from '@material-ui/icons/LockOutlined'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
-import withStyles from '@material-ui/core/styles/withStyles'
 import FilterLink from '../link/link'
 import {logIn} from '../../Actions/signinActions'
-import {Link} from 'react-router-dom';
 import connect from 'react-redux/es/connect/connect'
-const axios = require('axios')
-
-const styles = (theme) => ({
-	main: {
-		width: 'auto',
-		display: 'block',
-		marginLeft: theme.spacing.unit * 3,
-		marginRight: theme.spacing.unit * 3,
-		[theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-			width: 400,
-			marginLeft: 'auto',
-			marginRight: 'auto',
-		},
-	},
-	heroButtons: {
-		marginTop: theme.spacing.unit * 4,
-	},
-	paper: {
-		marginTop: theme.spacing.unit * 8,
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-		padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
-	},
-	avatar: {
-		margin: theme.spacing.unit,
-		backgroundColor: theme.palette.secondary.main,
-	},
-	form: {
-		width: '100%', // Fix IE 11 issue.
-		marginTop: theme.spacing.unit,
-	},
-	submit: {
-		marginTop: theme.spacing.unit * 3,
-		textDecoration: 'none'
-	},
-
-	link: {
-		textDecoration: 'none'
-	},
+import axios from 'axios'
+import {Link} from 'react-router-dom';
+import '../../Assets/SignIn.css'
 
 
-})
+
+
 class SignIn extends React.Component {
+
 	constructor(props) {
 		super(props)
 		this.signIn = this.signIn.bind(this)
@@ -66,10 +28,10 @@ class SignIn extends React.Component {
 		this.handlePasswordChange = this.handlePasswordChange.bind(this)
 		this.state = {
 			email:'',
-			password:'',
-			token: ''
+			password:''
 		}
 	}
+
 	signIn(){
 		axios.post('http://localhost:3001/signIn', {
 			email: this.state.email,
@@ -93,32 +55,31 @@ class SignIn extends React.Component {
 		this.setState({password:e.target.value})
 	}
 	render() {
-		const { classes } = this.props
-
 		return (
-			<main className={classes.main}>
+			<main className={'main'}>
 				<CssBaseline />
-				<Paper className={classes.paper}>
-					<Avatar className={classes.avatar}>
-						<AccountBox />
+				<Paper className={'paper'}>
+					<Avatar className={'avatar'}>
+						<LockIcon />
 					</Avatar>
-					<Typography component="h1" variant="h5">
+					<Typography component="h1" variant="h5" className={'typographysign'}>
 						Вход
 					</Typography>
-					<form className={classes.form}>
+					<form className={'form'}>
 						<FormControl margin="normal" required fullWidth>
-							<InputLabel htmlFor="email">Email</InputLabel>
+							<InputLabel htmlFor="email">Адрес электронной почты</InputLabel>
 							<Input  onChange={this.handleEmailChange} id="email" name="email" autoComplete="email" autoFocus />
 						</FormControl>
 						<FormControl margin="normal" required fullWidth>
 							<InputLabel htmlFor="password">Пароль</InputLabel>
 							<Input onChange={this.handlePasswordChange} name="password" type="password" id="password" autoComplete="current-password" />
 						</FormControl>
-						<Button  variant="outlined" color="primary" component={Link} to="../SignUp/SignUp">
+						<Button  variant="outlined" className={'buttonsign'} color="primary" component={Link} to="../SignUp/SignUp">
 				Регистрация
 				</Button>
 						<FilterLink filter="../main"  >
 								<Button
+								    
 									type="submit"
 									fullWidth
 									variant="contained"
@@ -138,11 +99,15 @@ class SignIn extends React.Component {
 }
 
 
-
-
 SignIn.propTypes = {
 	classes: PropTypes.object.isRequired,
-	
 }
 
-export default withStyles(styles)(SignIn)
+function mapStateToProps(state) {
+	return {
+		user: state.user
+
+	}
+}
+
+export default connect(mapStateToProps)(SignIn)

@@ -60,11 +60,12 @@ function LetterAvatars(props) {
           <Grid container justify="left" alignItems="left">
             <Avatar className={classes.avatar}>H</Avatar>
         </Grid>
-      <Button className={classes.editButton} variant="outlined" component={Link} to='../EditProfile/EditProfile'  >
+      <Button className={classes.editButton} variant="outlined" component={Link} to='./EditProfile/EditProfile'  >
         Edit Profile
       </Button>
-      <Typography className={classes.Typography_1} variant="title" color="inherit" align='inherit'>Name</Typography>
-      <Typography  className={classes.Typography_1} variant="title" color="inherit" >Surname</Typography>
+      <Typography className={classes.Typography_1} variant="title" color="inherit" align='inherit'>Имя</Typography>
+      <Typography  className={classes.Typography_1} variant="title" color="inherit" >Фамилия</Typography>
+      <Typography  className={classes.Typography_1} variant="title" color="inherit" >E-mail</Typography>
       <div className={classNames(classes.layout, classes.cardGrid)}>
 					{/* End hero unit */}
 					<Grid container spacing={10}>

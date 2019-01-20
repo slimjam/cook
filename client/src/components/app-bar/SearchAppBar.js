@@ -23,6 +23,9 @@ const styles = (theme) => ({
 		marginLeft: -12,
 		marginRight: 50,
 	},
+	buttonMaLog:{
+       magrin: 10
+	},
 	title: {
 		display: 'none',
 		[theme.breakpoints.up('sm')]: {
@@ -85,6 +88,7 @@ function SearchAppBar(props) {
 					<Typography className={classes.title} variant="h6" color="inherit" noWrap>
                        Cook Site
 					</Typography>
+
 					
 					<div className={classes.grow} />
 					<div className={classes.search}>
@@ -99,10 +103,12 @@ function SearchAppBar(props) {
 							}}
 						/>
 				</div>
-				<Button variant="outlined" color="inherit" component={Link} to="../Signin/SignIn">
+				<Button className={classes.buttonMaLog} variant="outlined" color="inherit" component={Link} to="../Signin/SignIn">
 				Вход
 				</Button>
-				
+				<Button variant="outlined" color="inherit" component={Link} to="../Main/main">
+				Главная страница
+				</Button>
 				
 				</Toolbar>
 			</AppBar>
