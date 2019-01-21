@@ -106,13 +106,31 @@ User.belongsToMany(Role, { as: 'Roles', through: { model: UserRole, unique: fals
 Role.belongsToMany(User, { as: 'Users', through: { model: UserRole, unique: false }, foreignKey: 'role_id',
     onDelete: 'cascade', hooks:true});
 
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
 
-//User.hasMany(Recipe, {foreignKey: 'fk_profile_id', sourceKey: 'uuid_r', onDelete: 'cascade', hooks:true});
-//Recipe.belongsTo(User, {foreignKey: 'fk_profile_id', targetKey: 'uuid_r', onDelete: 'cascade', hooks:true});
+function validatePassword(password) {
+    var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+    return re.test(String(password));
+}
+
+function validateAge(age) {
+    return typeof age == "number";
+}
+
 User.createUserWithProfile = function(login, password, salt,
                                       name, surname, age, lang=languageList[0], theme=themeList[0], role=rolesList[1]){   //test done
                                                         // add validation
     db.sync({force:false}).then( () => {
+        if(!validateEmail(login)){return {message: i18n.__('Input email is incorrect')}}
+        if(!validatePassword(password)){return {
+            message: i18n.__(
+                'Input password is incorrect. Password should contain at least one digit,' +
+                ' one lower case, one upper case, 8 literals')
+        }}
+        if(!validateAge(age)){return {message: i18n.__('Input age is incorrect')}}
         User.findOne({ where: {email: login} }).then(async user => {
             if(user){
                 console.log(i18n.__('Input email already exists'));

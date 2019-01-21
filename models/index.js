@@ -3,6 +3,8 @@ const {Recipe, Ingredient, Category, RecipeIngredient, UserRecipe} = require('./
 const {Rate, Comment, Like} = require('./post');
 const db = require('../db/dbconnect');
 const CATEGORIES_LIST = require('../db/data/categories');
+const INGREDIENTS_LIST = require('../db/data/ingredients');
+
 db.sync().then(() => {
     console.log('start sync!!!!!!!!!!');
     Role.findOrCreate({
@@ -22,11 +24,23 @@ db.sync().then(() => {
         })*/
     }).then(() => {
         CATEGORIES_LIST.forEach(async category => {
-            await Category.findOrCreate({
-                where: {
-                    name: category
-                }
-            })
+            if(category){
+                await Category.findOrCreate({
+                    where: {
+                        name: category
+                    }
+                })
+            }
+        })
+    }).then(() => {
+        INGREDIENTS_LIST.forEach(async ingridient => {
+            if (ingridient){
+                await Ingredient.findOrCreate({
+                    where: {
+                        name: ingridient
+                    }
+                })
+            }
         })
     }).then(() => {
         db.sync().then(() => {
