@@ -1,5 +1,6 @@
 const db = require('../db/dbconnect');
 const Sequelize = require('sequelize');
+const {User} = require('./users');
 
 const Recipe = db.define('recipe', {
     id: {
@@ -39,6 +40,11 @@ const Recipe = db.define('recipe', {
 });
 
 const Ingredient = db.define('ingredient', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     name: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -55,12 +61,49 @@ const Category = db.define('category', {
 });
 
 const RecipeIngredient = db.define('recipe_ingredient', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    i_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    r_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
     name: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
+        allowNull: false
     }
 });
+
+const UserRecipe = db.define('user_recipe', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    u_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    r_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    }
+});
+
+Recipe.belongsToMany(User,
+    { as: 'User', through: { model: UserRecipe, unique: false }, foreignKey: 'r_id',
+        onDelete: 'cascade', hooks:true});
+User.belongsToMany(Recipe,
+    { as: 'Recipe', through: { model: UserRecipe, unique: false }, foreignKey: 'u_id',
+        onDelete: 'cascade', hooks:true});
+
+
 
 Recipe.belongsToMany(Ingredient,
     { as: 'Ingredient', through: { model: RecipeIngredient, unique: false }, foreignKey: 'r_id',
@@ -99,4 +142,5 @@ Recipe.search = function(for_search){
 // };
 
 Recipe.belongsTo(Category, {as: 'category_id', onDelete: 'cascade', hooks:true});
-module.exports = {Recipe, Ingredient, Category, RecipeIngredient};
+Recipe.belongsTo(User, {as: 'owner_id', onDelete: 'cascade', hooks:true});
+module.exports = {Recipe, Ingredient, Category, RecipeIngredient, UserRecipe};

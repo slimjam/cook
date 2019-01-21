@@ -1,10 +1,11 @@
 const db = require('../db/dbconnect');
 const Sequelize = require('sequelize');
-const i18n = require('../i18n');
-const {Recipe} = require('./recipe');
+const i18n = require('../i18n')();
+//const {Recipe} = require('./recipe');
 
 const themeList = ['vegetable', 'sugar'];
 const languageList = ['ru', 'by'];
+const rolesList = ['admin', 'user'];
 
 const User = db.define('user', {
     id: {
@@ -29,11 +30,11 @@ const User = db.define('user', {
         defaultValue: true,
         allowNull: false
     },
-    uuid_r: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV1,
-        primaryKey: true
-    },
+    // uuid_r: {
+    //     type: Sequelize.UUID,
+    //     defaultValue: Sequelize.UUIDV1,
+    //     primaryKey: true
+    // },
     theme: {
         type: Sequelize.ENUM('vegetable', 'sugar'),
         defaultValue: 'vegetable'
@@ -62,6 +63,9 @@ const User = db.define('user', {
     },
 });
 
+User.languageList = languageList;
+User.themeList = themeList;
+
 const Role = db.define(
     'roles',
     {
@@ -76,6 +80,8 @@ const Role = db.define(
     }
 );
 
+Role.rolesList = rolesList;
+
 const UserRole = db.define('user_role', {
     id: {
         type: Sequelize.INTEGER,
@@ -84,6 +90,14 @@ const UserRole = db.define('user_role', {
     },
     name: {
         type: Sequelize.ENUM('admin', 'user')
+    },
+    user_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    role_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false
     }
 });
 
@@ -93,10 +107,10 @@ Role.belongsToMany(User, { as: 'Users', through: { model: UserRole, unique: fals
     onDelete: 'cascade', hooks:true});
 
 
-User.hasMany(Recipe, {foreignKey: 'fk_profile_id', sourceKey: 'uuid_r', onDelete: 'cascade', hooks:true});
-Recipe.belongsTo(User, {foreignKey: 'fk_profile_id', targetKey: 'uuid_r', onDelete: 'cascade', hooks:true});
+//User.hasMany(Recipe, {foreignKey: 'fk_profile_id', sourceKey: 'uuid_r', onDelete: 'cascade', hooks:true});
+//Recipe.belongsTo(User, {foreignKey: 'fk_profile_id', targetKey: 'uuid_r', onDelete: 'cascade', hooks:true});
 User.createUserWithProfile = function(login, password, salt,
-                                      name, surname, age, lang=languageList[0], theme=themeList[0]){   //test done
+                                      name, surname, age, lang=languageList[0], theme=themeList[0], role=rolesList[1]){   //test done
                                                         // add validation
     db.sync({force:false}).then( () => {
         User.findOne({ where: {email: login} }).then(async user => {
@@ -114,7 +128,7 @@ User.createUserWithProfile = function(login, password, salt,
                 language: lang,
                 theme: theme
             }).then( new_u => {
-                Role.findOne({ where: {role: 'user'} }).then(rid => {
+                Role.findOne({ where: {role: role} }).then(rid => {
                     UserRole.create({
                         user_id: new_u.id,
                         role_id: rid.id,
@@ -130,7 +144,7 @@ User.createUserWithProfile = function(login, password, salt,
 
 User.prototype.setAdmin = function(){
     db.sync({force:false}).then( () => {
-            Role.findOne({ where: {role: 'admin'} }).then(role_o => {
+            Role.findOne({ where: {role: rolesList[0]} }).then(role_o => {
                 UserRole.findOne({ where: {user_id: this.id} }).then(user_role => {
                     user_role.update({
                         role_id: role_o.id,
@@ -186,12 +200,16 @@ User.prototype.setLanguage = function(lang){
     }).then( () => { db.sync({force:false})})
 };
 
-// User.prototype.deleteUser = function(){
-//     var u_id = this.id;
-//     db.sync({force:false}).then( () => {
-//         User.delete()
-//     }).then( () => { db.sync({force:false})})
-// };
+User.prototype.deleteUser = function(){
+    var u_id = this.id;
+    db.sync({force:false}).then( () => {
+        this.destroy()
+    }).then(() => {
+        UserRole.findOne({where:{user_id: u_id}}).then(ur => {
+            ur.destroy()
+        })
+    }).then( () => { db.sync({force:false})})
+};
 // delete user
 
 // edit?

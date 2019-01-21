@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const i18n = require('../i18n');
+const i18n = require('../i18n')();
 // var data = {};
 // // force: true will drop the table if it already exists
 // User.sync({force: false}).then(() => {

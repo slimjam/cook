@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const {User} = require('../models/users');
-var i18n = require('../i18n');
+var i18n = require('../i18n')();
 
 router.post('/', function (req, res, next) {
     const sall = null;

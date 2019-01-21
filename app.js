@@ -13,6 +13,7 @@ var signUp = require('./routes/register');
 var auth = require('./routes/auth');
 var config = require('./config');
 var passport = require('passport');
+var recipe = require('./routes/recipe');
 var cors = require('./middlewares/cors');
 require('./config/passport');
 
@@ -27,6 +28,7 @@ app.use(cookieParser());
 var user = require('./routes/user');  // user profil need auth
 app.use('/signup',signUp);
 app.use('/signin', auth); // login action
+app.use('/createrecipe',recipe);
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at:', p, 'reason:', reason);
 });
@@ -42,8 +44,8 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', passport.authenticate('jwt', {session: false}), usersRouter); // admin
-
+//app.use('/users', passport.authenticate('jwt', {session: false}), usersRouter); // admin
+app.use('/admin', usersRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
